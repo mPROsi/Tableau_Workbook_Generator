@@ -1,0 +1,99 @@
+# Tableau Dashboard Generator Configuration
+
+application:
+  name: "Tableau Dashboard Generator"
+  version: "1.0.0"
+  description: "AI-powered automatic Tableau dashboard generation"
+
+azure_openai:
+  api_version: "2024-02-15-preview"
+  max_tokens: 4000
+  temperature: 0.3
+  top_p: 0.9
+
+dashboard_generation:
+  max_worksheets_per_workbook: 10
+  max_dashboards_per_workbook: 5
+  default_dimensions:
+    width: 1200
+    height: 800
+  
+  visualization_types:
+    numeric:
+      - bar
+      - line
+      - area
+      - scatter
+      - histogram
+    categorical:
+      - bar
+      - pie
+      - treemap
+      - packed_bubbles
+    geographic:
+      - map
+      - filled_map
+    temporal:
+      - line
+      - area
+      - gantt
+  
+  color_schemes:
+    default: "tableau10"
+    categorical: ["tableau10", "tableau20", "category10"]
+    sequential: ["blues", "oranges", "greens"]
+    diverging: ["red_blue", "orange_blue", "green_orange"]
+
+data_processing:
+  max_file_size_mb: 100
+  supported_formats:
+    - csv
+    - xlsx
+    - json
+    - parquet
+  
+  auto_detect_types: true
+  sample_rows_for_analysis: 1000
+  null_threshold: 0.3
+
+meta_prompting:
+  system_prompts:
+    data_analyzer: |
+      You are an expert data analyst specializing in business intelligence and Tableau dashboard design.
+      Analyze the provided dataset and generate comprehensive insights about:
+      1. Data structure and quality
+      2. Key business metrics and KPIs
+      3. Recommended visualizations
+      4. Dashboard layout suggestions
+      5. Color scheme recommendations
+      
+    dashboard_designer: |
+      You are a professional Tableau dashboard designer with expertise in creating compelling, 
+      user-friendly business intelligence dashboards. Based on the data analysis, create:
+      1. Optimal dashboard layouts
+      2. Visualization type selections
+      3. KPI prioritization
+      4. User experience recommendations
+      5. Performance optimization suggestions
+      
+    worksheet_creator: |
+      You are a Tableau worksheet specialist. Create detailed specifications for individual
+      worksheets including:
+      1. Chart types and configurations
+      2. Field mappings and calculations
+      3. Filters and parameters
+      4. Formatting and styling
+      5. Interactivity features
+
+logging:
+  level: "INFO"
+  format: "{time} | {level} | {name} | {message}"
+  rotation: "1 day"
+  retention: "30 days"
+  
+streamlit:
+  page_config:
+    page_title: "Tableau Dashboard Generator"
+    page_icon: "📊"
+    layout: "wide"
+    initial_sidebar_state: "expanded"
