@@ -42,7 +42,7 @@ Transform your data into compelling Tableau dashboards with the power of AI. Thi
 
 ```bash
 git clone <repository-url>
-cd TAB_WARP
+cd Tableau_Workbook_Generator
 python -m venv tableau_env
 source tableau_env/bin/activate  # On Windows: tableau_env\Scripts\activate
 pip install -r requirements.txt
@@ -109,7 +109,7 @@ The application will be available at `http://localhost:8501`
 ## 📁 Project Structure
 
 ```
-TAB_WARP/
+Tableau_Workbook_Generator/
 ├── src/
 │   ├── models/           # Data models and schemas
 │   ├── ai_engine/        # AI analysis and meta-prompting
