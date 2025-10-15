@@ -1,0 +1,16 @@
+name: Collect Repo Stats
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Runs daily at 03:00 UTC which is 11 PM EST
+  workflow_dispatch:
+
+jobs:
+  repostats:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: abhijit-ubale/github-repo-stats@main
+      with:
+        ghtoken: ${{ secrets.GHRS_GITHUB_API_TOKEN }}
+        databranch: github-repo-stats
+
