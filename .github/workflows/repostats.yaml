@@ -9,7 +9,7 @@ jobs:
   repostats:
     runs-on: ubuntu-latest
     steps:
-    - uses: abhijit-ubale/github-repo-stats@main
+    - uses: jgejrcke/github-repo-stats@RELEASE
       with:
         ghtoken: ${{ secrets.GHRS_GITHUB_API_TOKEN }}
         databranch: github-repo-stats
