@@ -1,6 +1,7 @@
 """
 AI Analysis Engine for Tableau Dashboard Generation.
 Uses AzureOpenAI and Langchain for intelligent data analysis and dashboard recommendations.
+Supports advanced Tableau calculations, including table calculations and Level of Detail (LOD) expressions.
 """
 
 import json
@@ -19,6 +20,7 @@ from ..models.schemas import (
     AIRecommendation, KPISpecification, VisualizationSpec,
     VisualizationType, ColorScheme, DataType
 )
+from ..models.schemas import CalculatedFieldSpec
 from ..utils.config import Config
 from ..utils.logger import get_logger
 
@@ -265,44 +267,71 @@ class TableauDashboardAnalyzer:
     async def analyze_dataset(self, request: AIAnalysisRequest) -> AIAnalysisResponse:
         """
         Perform comprehensive AI analysis of the dataset for dashboard generation.
+        Ensures calculated fields (from KPIs) are added to the dataset schema.
         """
         try:
             logger.info(f"Starting AI analysis for dataset: {request.dataset_schema.name}")
-            
+
             # Prepare data for analysis
             column_details = self._format_column_details(request.dataset_schema.columns)
-            
+
             # Step 1: Data Analysis
             logger.info("Performing data analysis...")
             data_insights = await self._run_data_analysis(
                 request.dataset_schema, column_details, request.business_goals, 
                 request.target_audience
             )
-            
+
             # Step 2: Dashboard Design Recommendations
             logger.info("Generating dashboard design recommendations...")
             design_recommendations = await self._run_dashboard_design(
                 data_insights, request.business_goals, request.target_audience,
                 request.dataset_schema
             )
-            
+
             # Step 3: KPI Generation
             logger.info("Generating KPI recommendations...")
             kpis = await self._run_kpi_generation(
                 data_insights, column_details, request.business_goals
             )
             
+            calculated_fields = []
+            for kpi in kpis:
+                if hasattr(kpi, "calculation") and kpi.calculation:
+                    formula = kpi.calculation
+                    # Lightweight validation
+                    warning = None
+                    if not formula.strip():
+                        warning = f"KPI '{kpi.name}' has an empty calculation formula."
+                    elif ("{" in formula and not formula.strip().startswith("{")):
+                        warning = f"KPI '{kpi.name}' formula may be an invalid LOD calculation: {formula}"
+                    elif "[" not in formula:
+                        warning = f"KPI '{kpi.name}' formula does not reference any fields: {formula}"
+                    if warning:
+                        logger.warning(warning)
+                    data_type = DataType.FLOAT if "#" in getattr(kpi, "format_string", "") else DataType.STRING
+                    calculated_fields.append(
+                        CalculatedFieldSpec(
+                            name=kpi.name,
+                            formula=formula,
+                            data_type=data_type,
+                            role="measure"
+                        )
+                    )
+            # Merge with any existing calculated fields in the schema
+            request.dataset_schema.calculated_fields.extend(calculated_fields)
+
             # Step 4: Visualization Recommendations
             logger.info("Generating visualization recommendations...")
             visualizations = await self._run_visualization_recommendations(
                 request.dataset_schema, request.business_goals, data_insights, kpis
             )
-            
+
             # Parse design recommendations
             layout_rec, color_rec, performance_considerations = self._parse_design_recommendations(
                 design_recommendations
             )
-            
+
             # Create final response
             response = AIAnalysisResponse(
                 dataset_insights=data_insights.dict(),
@@ -313,14 +342,14 @@ class TableauDashboardAnalyzer:
                 color_scheme_recommendation=color_rec,
                 performance_considerations=performance_considerations
             )
-            
+
             logger.info("AI analysis completed successfully")
             return response
-            
+
         except Exception as e:
             logger.error(f"AI analysis failed: {e}")
             raise
-    
+
     def _format_column_details(self, columns) -> str:
         """Format column details for AI analysis"""
         details = []
@@ -328,7 +357,6 @@ class TableauDashboardAnalyzer:
             stats_str = ""
             if col.statistics:
                 stats_str = f" (mean: {col.statistics.get('mean', 'N/A')}, std: {col.statistics.get('std', 'N/A')})"
-            
             details.append(
                 f"- {col.name}: {col.data_type.value}, "
                 f"{col.unique_values} unique values, "

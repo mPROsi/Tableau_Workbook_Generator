@@ -2,18 +2,19 @@
 
 **AI-Powered Automatic Tableau Dashboard Creation**
 
-Transform your data into compelling Tableau dashboards with the power of AI. This production-grade application uses Azure OpenAI, Langchain, and meta-prompting techniques to automatically analyze your data and generate professional Tableau workbooks.
+Transform your data into compelling Tableau dashboards with the power of AI. This production-grade application uses Azure OpenAI, Langchain, and meta-prompting techniques to automatically analyze your data and generate professional Tableau workbooks—including support for advanced Tableau calculations such as table calculations and Level of Detail (LOD) expressions.
 
 ## ✨ Features
 
 - **🤖 AI-Powered Analysis**: Intelligent data analysis using Azure OpenAI and meta-prompting
-- **📊 Automatic Dashboard Generation**: Creates complete Tableau workbooks (.twb/.twbx) 
+- **📊 Automatic Dashboard Generation**: Creates complete Tableau workbooks (.twb/.twbx)
 - **🎯 Business-Focused**: Tailors dashboards based on your business goals and audience
 - **🔄 Workflow Orchestration**: Uses Langgraph for robust, scalable workflow management
 - **🌐 Web Interface**: Intuitive Streamlit-based interface for easy interaction
 - **⚡ Production Ready**: Comprehensive logging, error handling, and validation
 - **🎨 Smart Visualizations**: Recommends optimal chart types and layouts
 - **📈 KPI Generation**: Automatically identifies and creates key performance indicators
+- **🧮 Advanced Calculations**: Supports Tableau calculated fields, including table calculations and LOD expressions
 
 ## 🏗️ Architecture
 
@@ -102,7 +103,8 @@ The application will be available at `http://localhost:8501`
 
 ### Step 4: Generate Dashboard 📊
 - Creates complete Tableau workbook
-- Includes sample data and visualizations
+- Includes sample data, visualizations, and calculated fields
+- **Supports advanced Tableau calculations:** Table calculations (e.g., `WINDOW_SUM([Sales])`), LOD expressions (e.g., `{ FIXED [Region] : SUM([Sales]) }`), and custom formulas
 - Downloads ready-to-use .twbx file
 - Compatible with Tableau Desktop/Server
 
@@ -178,6 +180,13 @@ Choose from different dashboard approaches:
 - **TWBX**: Complete packaged workbook with data included
 - **TWB**: XML workbook file (requires separate data connection)
 
+### Advanced Tableau Calculations
+
+- **Calculated Fields:** Automatically generated and inserted into Tableau workbooks
+- **Table Calculations:** AI and user-defined formulas such as `WINDOW_SUM`, `RUNNING_AVG`, etc.
+- **Level of Detail (LOD) Expressions:** Full support for `{ FIXED ... }`, `{ INCLUDE ... }`, `{ EXCLUDE ... }` syntax
+- **Custom Formulas:** Any valid Tableau calculation can be included via AI or user input
+
 ## 🛠️ Development
 
 ### Architecture Components
@@ -219,6 +228,11 @@ Choose from different dashboard approaches:
 2. Extend `TableauDashboardAnalyzer` in `src/ai_engine/analyzer.py`
 3. Add new analysis chains for specific use cases
 
+#### Advanced Calculations
+
+- To add new types of Tableau calculations, update the AI prompt templates and ensure your schema supports the formula.
+- The generator will automatically include any valid Tableau calculation in the workbook XML.
+
 ## 📊 Supported Data Sources
 
 - **CSV Files**: Comma-separated values
@@ -236,6 +250,10 @@ Choose from different dashboard approaches:
 ## 🚦 Troubleshooting
 
 ### Common Issues
+
+#### "Calculation formula warning"
+- If a KPI or calculated field formula is empty or suspicious, a warning will be logged.
+- Ensure formulas follow Tableau syntax for table calculations and LOD expressions.
 
 #### "Azure OpenAI API key not configured"
 - Ensure `.env` file exists with correct credentials

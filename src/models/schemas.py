@@ -10,10 +10,10 @@ import pandas as pd
 from datetime import datetime
 
 class DataType(str, Enum):
-    """Supported data types for analysis"""
     INTEGER = "integer"
     FLOAT = "float"
     STRING = "string"
+    DATE = "date"
     DATETIME = "datetime"
     BOOLEAN = "boolean"
     CATEGORICAL = "categorical"
@@ -58,6 +58,15 @@ class DataColumn(BaseModel):
     is_key_field: bool = Field(False, description="Whether this column is identified as a key business field")
     recommended_role: Optional[Literal["dimension", "measure", "attribute"]] = Field(None, description="Recommended Tableau role")
 
+
+class CalculatedFieldSpec(BaseModel):
+    """Specification for a calculated field (dimension or measure)"""
+    name: str = Field(..., description="Calculated field name")
+    formula: str = Field(..., description="Tableau calculation formula")
+    data_type: DataType = Field(..., description="Data type of the calculated field")
+    role: Optional[Literal["dimension", "measure"]] = Field("measure", description="Tableau role")
+
+
 class DatasetSchema(BaseModel):
     """Complete dataset schema and metadata"""
     name: str = Field(..., description="Dataset name")
@@ -67,6 +76,9 @@ class DatasetSchema(BaseModel):
     data_quality_score: float = Field(..., ge=0, le=1, description="Overall data quality score")
     business_context: Optional[str] = Field(None, description="Business context description")
     created_at: datetime = Field(default_factory=datetime.now)
+    calculated_fields: List[CalculatedFieldSpec] = Field(default_factory=list, description="List of calculated fields for Tableau")
+
+
 
 class KPISpecification(BaseModel):
     """Key Performance Indicator specification"""
@@ -179,7 +191,7 @@ class ValidationResult(BaseModel):
     suggestions: List[str] = Field(default_factory=list, description="Improvement suggestions")
 
 # Utility functions for model validation
-def validate_dataframe_schema(df: pd.DataFrame) -> DatasetSchema:
+def validate_dataframe_schema(df: pd.DataFrame, calculated_fields: Optional[List[CalculatedFieldSpec]] = None) -> DatasetSchema:
     """Create a DatasetSchema from a pandas DataFrame"""
     columns = []
     
@@ -233,5 +245,6 @@ def validate_dataframe_schema(df: pd.DataFrame) -> DatasetSchema:
         total_rows=len(df),
         total_columns=len(df.columns),
         columns=columns,
-        data_quality_score=data_quality_score
+        data_quality_score=data_quality_score,
+        calculated_fields=calculated_fields or []
     )
