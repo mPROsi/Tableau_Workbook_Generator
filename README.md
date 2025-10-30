@@ -293,6 +293,30 @@ Application logs are stored in the `logs/` directory:
 
 We welcome contributions! Please see our contribution guidelines:
 
+## 🛡️ Known Limitations & Suggestions
+
+Tableau Dashboard Generator is designed for reliability and real-world use, but like any evolving open-source project, there are areas for further enhancement. We want to be transparent about current limitations and encourage users to adapt or contribute improvements:
+
+- **Authentication & Access Control:**  
+  The Streamlit interface does not include built-in user authentication. For sensitive or multi-user environments, consider deploying behind a secure gateway or integrating with your organization's authentication system.
+
+- **Enterprise Scalability:**  
+  The app is ideal for small teams and internal use. For high-concurrency or enterprise deployments, containerization (e.g., Docker), cloud hosting, or scaling Streamlit with load balancers is recommended.
+
+- **Automated Testing & CI/CD:**  
+  While testing is encouraged, automated test coverage and CI/CD pipelines are not included out-of-the-box. Contributions to strengthen these areas are very welcome!
+
+- **Monitoring & Alerting:**  
+  External monitoring and alerting integrations are not yet provided. You can add tools like Prometheus, Grafana, or cloud-native monitoring for production deployments.
+
+- **Session Management:**  
+  Multi-user session support is limited. For collaborative use, consider deploying multiple instances or integrating with session management solutions.
+
+**How You Can Help:**  
+We encourage users and contributors to adapt the project to their needs, share improvements, and help us make this Tableau Dashboard Generator even better. If you have ideas, solutions, or enhancements, please open an issue or submit a pull request!
+
+---
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
