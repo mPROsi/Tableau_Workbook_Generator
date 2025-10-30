@@ -60,8 +60,8 @@ Try Tableau Dashboard Generator today and let’s build the future of AI-powered
 
 ---
 
-**GitHub:** [Tableau Dashboard Generator](https://github.com/your-repo-url)  
-**Discussion Board:** [Join the conversation](https://github.com/your-repo-url/discussions)
+**GitHub:** [Tableau Dashboard Generator](https://github.com/abhijit-ubale/Tableau_Workbook_Generator)  
+**Discussion Board:** [Join the conversation](https://github.com/abhijit-ubale/Tableau_Workbook_Generator/discussions)
 
 ---
 
