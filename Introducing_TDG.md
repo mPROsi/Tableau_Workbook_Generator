@@ -42,7 +42,7 @@ These technologies work together to automate dashboard creation, enhance data in
 
 ## 🙌 Show Your Love & Help Us Grow!
 
-If Tableau Dashboard Generator makes your life easier, please:
+If Tableau Dashboard Generator has helped you save time or discover new insights, show your appreciation and help others benefit too!
 
 - ⭐️ **Star the repo** on GitHub
 - 🍴 **Fork or clone** it to customize and contribute
